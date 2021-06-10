@@ -1,70 +1,132 @@
-# Getting Started with Create React App
+# Search Movie App Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is simple React JS application where we can search movie and see the details about that movie using omdb API. This project was created to fulfill the technical test on stockbit.
 
-## Available Scripts
+## Installation
+To get the project up and running, and view components in the browser, complete the following steps:
 
-In the project directory, you can run:
+1. Download and install Node: <https://nodejs.org/>
+2. Clone this repo: `git clone git@github.com:MuhammadIlhamPeruzzi/Movie-List.git` (SSH) or `git clone https://github.com/MuhammadIlhamPeruzzi/Movie-List.git` (HTTPS)
+3. Install project dependancies: `npm install`
+4. Start the development environment: `npm start`
+5. Open your browser and visit <http://localhost:3000>
 
-### `yarn start`
+## Development
+When developing components, you may want assets automatically compiled and the browser to refresh automatically. To do this, run the following task:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+* `npm run dev`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Creating a static build
+To create a static instance of this project, run the following task:
 
-### `yarn test`
+* `npm run build`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This will create a folder called `www`, into which the required files will be created.
 
-### `yarn build`
+## React Hooks Used
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Here are some implementations of react hook on this project :
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 1. `useState`
+`useState` used to handle reactive data present in a component. When data in `useState` change, the UI will re-render. That way data displayed is the data with the latest changes. In this project, one of the uses of `useState` used to indicate data retrieval is in progress. The code snippet is as follows:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```js
+const [loading, setLoading] = useState(false);
+```
 
-### `yarn eject`
+### 2. `useEffect`
+`useEffect` used to perform side effects from a function component. Fuction in `useEffect` will be run when component mounted, data in array dependencies change, and before component is removed from UI (optionally). In this project, one of the uses of `useEffect` used in `movieDetail.js` to display information of selected movie.
+The code snippet is as follows:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```js
+useEffect(() => {
+    if (imdbID && imdbID !== "") getDetailMovie(imdbID);
+    return () => {
+      dispatch(removeSelectedMovie());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [imdbID]);
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 3. `useSelector`
+`useSelector` hooks is react-redux hooks that can be used to extract data from the Redux store state, using a selector function. The code snippet is as follows:
+```js
+let allMovies = useSelector((state) => state.allMovies.movies);
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 4. `useDispatch`
+`useDispatch` hooks is react-redux hooks that can be used to dispatch action from redux store, so we can use it at the component. The code snippet is as follows:
+```js
+const dispatch = useDispatch();
+...
+const getDetailMovie = async (idImdb) => {
+    setLoading(true);
+    setTimeout(() => {
+      MovieServices.getDetailMovie(idImdb)
+        .then((res) => {
+          if(res){
+            dispatch(selectedMovie(res));
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() =>{
+          setLoading(false);
+        })
+      }
+    ,1500);
+  }
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Additional Information
+Answer for 'Logic Test' saved in `AnagramGroup.js`. The source code:
+```js
+ function checkAnagram(s1, s2) {
 
-## Learn More
+    if(s1.length !== s2.length){
+        return false
+    }
+    const NO_OF_CHARS = 256;
+    let counter = new Array(NO_OF_CHARS);
+    for(let i = 0; i < NO_OF_CHARS; i++)
+    {
+        counter[i] = 0;
+    }
+    for(var i = 0; i < s1.length; i++)
+    {
+        counter[s1.charCodeAt(i)]++;
+        counter[s2.charCodeAt(i)]--;
+    }
+    for(var i = 0; i < NO_OF_CHARS; i++)
+        if (counter[i] != 0)
+        {
+            return false;
+        }
+    return true;
+}
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+function groupAnagram(arrStr){
+    usedArr = []
+    result = []
+    for(var i=0; i<arrStr.length;i++){
+        if(usedArr.indexOf(arrStr[i])<0){
+            var group = []
+            for(var j=i+1; j<arrStr.length;j++){
+                if(checkAnagram(arrStr[i], arrStr[j])){
+                    group.push(arrStr[j])
+                    usedArr.push(arrStr[j])
+                }
+            }
+            group.push(arrStr[i])
+            usedArr.push(arrStr[i])
+            result.push(group)
+        }
+    }
+    return result
+}
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+const testArr = ['kita', 'atik', 'tika', 'aku', 'kia', 'makan', 'kua']
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+console.log(groupAnagram(testArr))
+```
