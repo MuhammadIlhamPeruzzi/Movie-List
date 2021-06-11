@@ -23,6 +23,10 @@ To create a static instance of this project, run the following task:
 
 This will create a folder called `www`, into which the required files will be created.
 
+## How to Use App
+
+Enter movie title in search bar and click search button. If movie exist, list of movie will be displayed. Click on image poster to see pop up image. Click on movie title to see the details of movie.
+
 ## React Hooks Used
 
 Here are some implementations of react hook on this project :
