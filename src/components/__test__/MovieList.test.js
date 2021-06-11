@@ -1,8 +1,6 @@
 import {render, fireEvent, waitFor} from '@testing-library/react'
-import Header from '../Header'
 import MovieList from '../MovieList'
 import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
 import {Provider} from 'react-redux';
 import store from '../../redux/store';
 
@@ -45,9 +43,9 @@ describe("can search movie by search box", () => {
         fireEvent.change(searchBox, {target:{value:'superman'}});
         const searchButton = queryByTitle("Submit");
         fireEvent.click(searchButton);
-        const listMovieContainer = queryByTitle("Movie Not Found")
+        const listMovieContainer = queryByTitle("List Movie Container")
         await waitFor(() => {
-            expect(queryByTitle("Movie Not Found")).toBeInTheDocument;
+            expect(listMovieContainer).toBeInTheDocument;
           })
     });
 });

@@ -39,7 +39,7 @@ const MovieComponent = () => {
   };
 
     const renderList = movies && movies.map((movie, index) => {
-        const { imdbID, Title, Poster, Year, category } = movie;
+        const { imdbID, Title, Poster, Year } = movie;
         return (
         
           <div className="three wide column" key={index}>
@@ -53,12 +53,10 @@ const MovieComponent = () => {
                   <div className="content" style={{fontSize: "large",padding: "1em 1em 1em 1em", fontWeight: "600"}}>
                     <div className="header">{Title}</div>
                     <div className="meta price">{Year}</div>
-                    <div className="meta">{category}</div>
                   </div>
                   </Link>
                 </div>
               </div>
-            
           </div>
          
         );
